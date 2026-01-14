@@ -11,6 +11,8 @@ def main():
 
         # match input(): # unusual behaviour, requires 2 newline and exit case invalid
         match usercmd.split():
+            case ['type',*rest] if rest[0] in ['echo', 'exit', 'type']:
+                sys.stdout.write(rest[0] + " is a shell builtin\n") 
             case ['echo',*rest]:
                 sys.stdout.write(" ".join(rest) + "\n")
             case ['exit']:
