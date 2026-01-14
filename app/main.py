@@ -4,8 +4,9 @@ import sys
 def main():
     # TODO: Uncomment the code below to pass the first stage
     sys.stdout.write("$ ")
-    usercmd = sys.stdin.readline()
-    sys.stdout.write(f"{usercmd}: command not found")
+    usercmd = input()
+    # usercmd = sys.stdin.readline() # extra newline
+    sys.stdout.write(usercmd + ": command not found\n")
 
 
 if __name__ == "__main__":
