@@ -8,13 +8,18 @@ def search_in_ospath(st):
         # list the files in eachdir and find the matching name
         # print(f"looking in {eachdir}")
         # os.listdir(eachdir)
-        with os.scandir(eachdir) as scandir_iterable:  # for d in os.scandir(eachdir): directory handler stays open until garbage collection if loop ends early
-            for i in scandir_iterable:
-                if i.is_file() and i.name == st and i.stat().st_mode & stat.S_IXUSR:
-                    return eachdir + "/" + i.name # the path of the executable
-                else:
-                    continue # keep looking for executable
-            # if os.access(path, os.X_OK): # alternate way to check if a path is executable...
+        try:
+            with os.scandir(eachdir) as scandir_iterable:  # for d in os.scandir(eachdir): directory handler stays open until garbage collection if loop ends early
+                for i in scandir_iterable:
+                    if i.is_file() and i.name == st and i.stat().st_mode & stat.S_IXUSR:
+                        return eachdir + "/" + i.name # the path of the executable
+                    else:
+                        continue # keep looking for executable
+                # if os.access(path, os.X_OK): # alternate way to check if a path is executable...
+        except:
+            # plot twist: Linux allows non-existent directories in PATH. hence looking for a dir will throw error
+
+            continue
     return False
 
 
