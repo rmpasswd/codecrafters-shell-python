@@ -1,64 +1,74 @@
+from re import sub
 import sys, os
 import stat
 
 def search_in_ospath(st):
-    # import os,stat
-    dirlist = os.environ["PATH"].split(os.pathsep) # if the PATH is set to /dir1:/dir2:/dir3
-    for eachdir in dirlist:
-        # list the files in eachdir and find the matching name
-        # print(f"looking in {eachdir}")
-        # os.listdir(eachdir)
-        try:
-            with os.scandir(eachdir) as scandir_iterable:  # for d in os.scandir(eachdir): directory handler stays open until garbage collection if loop ends early
-                for i in scandir_iterable:
-                    if i.name == st  and  i.is_file()  and i.stat().st_mode & stat.S_IXUSR: # or just use convenient fun: shutil.which and shutil.is_executable()
-                        return eachdir + "/" + i.name # the path of the executable
-                    else:
-                        continue # keep looking for executable
-                # if os.access(path, os.X_OK): # alternate way to check if a path is executable...
-        except:
-            # plot twist: Linux allows non-existent directories in PATH. hence looking for a dir will throw error
+	# import os,stat
+	dirlist = os.environ["PATH"].split(os.pathsep) # if the PATH is set to /dir1:/dir2:/dir3
+	for eachdir in dirlist:
+		# list the files in eachdir and find the matching name
+		# print(f"looking in {eachdir}")
+		# os.listdir(eachdir)
+		try:
+			with os.scandir(eachdir) as scandir_iterable:  # for d in os.scandir(eachdir): directory handler stays open until garbage collection if loop ends early
+				for i in scandir_iterable:
+					if i.name == st  and  i.is_file()  and i.stat().st_mode & stat.S_IXUSR: # or just use convenient fun: shutil.which and shutil.is_executable()
+						return eachdir + "/" + i.name # the path of the executable
+					else:
+						continue # keep looking for executable
+				# if os.access(path, os.X_OK): # alternate way to check if a path is executable...
+		except:
+			# plot twist: Linux allows non-existent directories in PATH. hence looking for a dir will throw error
 
-            continue
-    return False
+			continue
+	return False
 
 
 def main():
 
 
-    while True:
-        sys.stdout.write("$ ")
-        usercmd = input()
-        # usercmd = sys.stdin.readline() # extra newline
+	while True:
+		sys.stdout.write("$ ")
+		usercmd = input()
+		# usercmd = sys.stdin.readline() # extra newline
 
-        # match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
-        match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
-            case ['type',*rest]:
-                if rest[0] in ['echo', 'exit', 'type']:
-                    sys.stdout.write(rest[0] + " is a shell builtin\n") 
-                elif (r:= search_in_ospath(rest[0])):
-                    sys.stdout.write(rest[0] + " is " + r + "\n") 
-                else:
-                    sys.stdout.write(rest[0] + ": not found\n") 
-            case ['echo',*rest]:
-                sys.stdout.write(" ".join(rest) + "\n")
-            case ['exit']:
-                sys.exit()
-            case [othercmd, *rest]:
-                os.execlp(othercmd,*rest)
-            case _:
-                try:
-                    # Task is to :
-                    # For example, if the user types custom_exe arg1 arg2, your shell should:
-                    # Execute it with three arguments: custom_exe (the program name), arg1, and arg2
-                    # [cmd, *args] = usercmd.split()
-                    os.execvp(usercmd.split()[0], usercmd.split())
-                except:
-                    pass # probably could not find the command in PATH
-                sys.stdout.write(usercmd + ": command not found\n")
+		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
+		match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
+			case ['type',*rest]:
+				if rest[0] in ['echo', 'exit', 'type']:
+					sys.stdout.write(rest[0] + " is a shell builtin\n") 
+				elif (r:= search_in_ospath(rest[0])):
+					# print(r)
+					sys.stdout.write(rest[0] + " is " + r + "\n") 
+				else:
+					sys.stdout.write(rest[0] + ": not found\n") 
+			case ['echo',*rest]:
+				sys.stdout.write(" ".join(rest) + "\n")
+			case ['exit']:
+				sys.exit()
+			case [othercmd, *rest]: 
+			# matches 'at least one word', rest can be [] and match this case, not necessarily more than one word 
+			# equivalent to case _: because i am matching on a list i.e. usercmd.split()
+				# print(rest)
+			# case _:
+				# try:
+				# 	# Task is to :
+				# 	# For example, if the user types custom_exe arg1 arg2, your shell should:
+				# 	# Execute it with three arguments: custom_exe (the program name), arg1, and arg2
+				# 	os.execvp(usercmd.split()[0], usercmd.split()) 
+					# error: Expected prompt ("$ ") but received "" because: https://docs.python.org/3/library/os.html#:~:text=execute%20a%20new%20program%2C%20replacing%20the%20current%20process%3B%20they%20do%20not%20return
+				# 	continue
+				# except:
+				# 	pass # probably could not find the command in PATH, we wont throw any error...
+				import subprocess
+				try:
+					returnobject = subprocess.run([othercmd, *rest])	# no need to search in PATH
+					assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
+					# print(returnobject.stdout)
+				except:						
+					sys.stdout.write(usercmd + ": command not found\n")
 
 if __name__ == "__main__":
-    main()
+	main()
 
- 
 
