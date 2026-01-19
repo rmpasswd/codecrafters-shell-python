@@ -34,7 +34,11 @@ def main():
 
 		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
 		match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
-
+			case ['cd', *rest]: # ['cd', ['/mnt/c/Users/Ahmad', 'Mahin/']]
+				if os.path.exists("".join(rest)):
+					os.chdir("".join(rest))
+				else:
+					print(f"cd: {"".join(rest)}: No such file or directory")
 			case ['pwd']:
 				print(os.getcwd())
 			case ['type',*rest]:
@@ -51,7 +55,7 @@ def main():
 				sys.exit()
 			case [othercmd, *rest]: 
 			# matches 'at least one word', rest can be [] and still match this case 
-			# equivalent to case _: because i am matching on a list i.e. usercmd.split()
+			# equivalent to case _: because I am always matching on a list i.e. usercmd.split()
 				# print(rest)
 			# case _:
 				# try:
