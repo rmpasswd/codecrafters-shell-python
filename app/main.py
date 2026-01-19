@@ -34,6 +34,9 @@ def main():
 
 		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
 		match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
+
+			case ['pwd']:
+				print(os.getcwd())
 			case ['type',*rest]:
 				if rest[0] in ['echo', 'exit', 'type']:
 					sys.stdout.write(rest[0] + " is a shell builtin\n") 
@@ -47,7 +50,7 @@ def main():
 			case ['exit']:
 				sys.exit()
 			case [othercmd, *rest]: 
-			# matches 'at least one word', rest can be [] and match this case, not necessarily more than one word 
+			# matches 'at least one word', rest can be [] and still match this case 
 			# equivalent to case _: because i am matching on a list i.e. usercmd.split()
 				# print(rest)
 			# case _:
