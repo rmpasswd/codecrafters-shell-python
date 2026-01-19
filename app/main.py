@@ -38,7 +38,7 @@ def main():
 			case ['pwd']:
 				print(os.getcwd())
 			case ['type',*rest]:
-				if rest[0] in ['echo', 'exit', 'type']:
+				if rest[0] in ['echo', 'exit', 'type', 'pwd']:
 					sys.stdout.write(rest[0] + " is a shell builtin\n") 
 				elif (r:= search_in_ospath(rest[0])):
 					# print(r)
