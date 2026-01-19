@@ -35,6 +35,7 @@ def main():
 		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
 		match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
 			case ['cd', *rest]: # ['cd', ['/mnt/c/Users/Ahmad', 'Mahin/']]
+				rest = [os.getenv('HOME')] if rest == ['~'] else rest
 				if os.path.exists("".join(rest)):
 					os.chdir("".join(rest))
 				else:
@@ -77,5 +78,8 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+
+
 
 
