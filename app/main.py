@@ -1,6 +1,8 @@
 from re import sub
 import sys, os
 import stat
+import subprocess
+
 
 def search_in_ospath(st):
 	# import os,stat
@@ -40,6 +42,15 @@ def main():
 					os.chdir("".join(rest))
 				else:
 					print(f"cd: {"".join(rest)}: No such file or directory")
+			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] : # ls /tmp/dir > lsoutput.txt
+				returnobj = subprocess.run(cmd, capture_output = True)
+				# print(returnobj.returncode)
+				if returnobj.returncode: # if non-zero exit code, 0 = successfull
+					print(returnobj.stderr.decode('utf-8'))
+				else:
+					with open(filename, 'w') as f:
+						iterable_str = returnobj.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
+						f.writelines(iterable_str) #  does not put any line seperators such as \n
 			case ['pwd']:
 				print(os.getcwd())
 			case ['type',*rest]:
@@ -68,7 +79,6 @@ def main():
 				# 	continue
 				# except:
 				# 	pass # probably could not find the command in PATH, we wont throw any error...
-				import subprocess
 				try:
 					returnobject = subprocess.run([othercmd, *rest])	# no need to search in PATH
 					assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
