@@ -43,10 +43,12 @@ def main():
 					os.chdir("".join(rest))
 				else:
 					print(f"cd: {"".join(rest)}: No such file or directory")
-			
 
 			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] : # ls /tmp/dir > lsoutput.txt
-				returnobj = subprocess.run(cmd, capture_output = True)
+				# print(cmd)
+				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
+				cmd = usercmd[:usercmd.find(">")-2] # -2 covers 1> also
+				returnobj = subprocess.run(f"{cmd}", shell=True, capture_output = True)
 				# print(returnobj.returncode)
 				if returnobj.returncode: # if non-zero exit code, 0 = successfull
 					print(returnobj.stderr.decode('utf-8'))
@@ -54,7 +56,6 @@ def main():
 					with open(filename, 'w') as f:
 						iterable_str = returnobj.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
-			
 
 			case ['pwd']:
 				print(os.getcwd())
