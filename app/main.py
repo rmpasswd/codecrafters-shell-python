@@ -78,7 +78,7 @@ def main():
 					sys.stdout.write(returnobject.stdout.decode('utf-8'))
 					# print(f"wrote {returnobject.stdout}")
 
-			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] | [*cmd, '1>>', filename ] : # ls /tmp/dir > lsoutput.txt
+			case [*cmd, '>', filename ] | [*cmd, '>>', filename ] | [*cmd, '1>', filename ] | [*cmd, '1>>', filename ] : # ls /tmp/dir > lsoutput.txt
 				# print(cmd)
 				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
 
