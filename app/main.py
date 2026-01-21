@@ -59,11 +59,25 @@ def main():
 				else:
 					print(f"cd: {"".join(rest)}: No such file or directory")
 
+
+			case [*cmd, '2>', filename ] : # ls /tmp/dir 2> lsoutput.txt
+				cmd = userinput[:userinput.find("2>")] 
+				returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+				# print(returnobject)
+				# if returnobject.stderr != b'': 	# commented because we want to make the file with empty content, when there are no error
+				with open(filename, 'w') as f:
+					iterable_str = returnobject.stderr.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
+					f.writelines(iterable_str) #  does not put any line seperators such as \n
+				if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
+					sys.stdout.write(returnobject.stdout.decode('utf-8'))
+					# print(f"wrote {returnobject.stdout}")
+
 			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] : # ls /tmp/dir > lsoutput.txt
 				# print(cmd)
 				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
-				cmd = userinput[:userinput.find("1>")] if userinput.find("1>")!=-1 else userinput[:userinput.find(">")]
-				
+
+				cmd = userinput[:userinput.find("1>")] if userinput.find("1>")!=-1 else userinput[:userinput.find(">")]	
+
 				returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
 
 				# print(returnobject)
@@ -158,7 +172,7 @@ def main():
 			case ['exit']:
 				sys.exit()
 			
-			case [firstword, *rest]: 
+			case [firstword, *rest]: # everything else:
 			# matches 'at least one word', rest can be [] and still match this case 
 			# equivalent to case _: because I am always matching on a list i.e. userinput.split()
 				# 	# Task is to :
