@@ -1,4 +1,4 @@
-from re import sub
+import re
 import sys, os
 import stat
 import subprocess
@@ -26,16 +26,31 @@ def search_in_ospath(st):
 	return False
 
 
+def groom(cmd):
+	g=''
+	for c in cmd:
+		if c==" ":
+			g+=r"\c"
+		elif c=="'":
+			g+=r"\'"
+		elif c=='"':
+			g+=r"\""
+		elif c=="\\":
+			g+="\\"
+		else:
+			g+=c
+	return g
+
 def main():
 
 
 	while True:
 		sys.stdout.write("$ ")
-		usercmd = input()
-		# usercmd = sys.stdin.readline() # extra newline
+		userinput = input()
+		# userinput = sys.stdin.readline() # extra newline
 
 		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
-		match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
+		match userinput.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
 			
 			case ['cd', *rest]: # ['cd', ['/mnt/c/Users/Ahmad', 'Mahin/']]
 				rest = [os.getenv('HOME')] if rest == ['~'] else rest
@@ -47,19 +62,19 @@ def main():
 			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] : # ls /tmp/dir > lsoutput.txt
 				# print(cmd)
 				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
-				cmd = usercmd[:usercmd.find("1>")] if usercmd.find("1>")!=-1 else usercmd[:usercmd.find(">")]
+				cmd = userinput[:userinput.find("1>")] if userinput.find("1>")!=-1 else userinput[:userinput.find(">")]
 				
-				returnobj = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+				returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
 
-				# print(returnobj.returncode)
-				if returnobj.returncode: # if non-zero exit code, 0 = successfull
-					sys.stdout.write(returnobj.stderr.decode('utf-8'))
-				if returnobj.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
+				# print(returnobject)
+				if returnobject.returncode: # if non-zero exit code, 0 = successfull
+					sys.stdout.write(returnobject.stderr.decode('utf-8'))
+				if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
 					with open(filename, 'w') as f:
-						iterable_str = returnobj.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
+						iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
-					# print(f"wrote {returnobj.stdout}")
-					
+					# print(f"wrote {returnobject.stdout}")
+
 			case ['pwd']:
 				print(os.getcwd())	
 
@@ -74,13 +89,12 @@ def main():
 
 			case ['echo',*rest]:
 
-				import re
-				regexmatch = re.search(r'["\'\\]', usercmd)
+				regexmatch = re.search(r'["\'\\]', userinput)
 				if not regexmatch: # normal case with no quote or slash
 					sys.stdout.write(" ".join(rest) + "\n")	
 
 				else:
-					m = usercmd.lstrip("echo").strip()
+					m = userinput.lstrip("echo").strip()
 					
 					# Iterate through each character and define some flags for quote and spaces...
 					SINGLE_QUOTE_START=False
@@ -144,31 +158,36 @@ def main():
 			case ['exit']:
 				sys.exit()
 			
-			case [othercmd, *rest]: 
+			case [firstword, *rest]: 
 			# matches 'at least one word', rest can be [] and still match this case 
-			# equivalent to case _: because I am always matching on a list i.e. usercmd.split()
+			# equivalent to case _: because I am always matching on a list i.e. userinput.split()
 				# 	# Task is to :
 				# 	# For example, if the user types custom_exe arg1 arg2, your shell should:
 				# 	# Execute it with three arguments: custom_exe (the program name), arg1, and arg2
-				# 	os.execvp(usercmd.split()[0], usercmd.split()) 
+				# 	os.execvp(userinput.split()[0], userinput.split()) 
 					# error: Expected prompt ("$ ") but received "" because: https://docs.python.org/3/library/os.html#:~:text=execute%20a%20new%20program%2C%20replacing%20the%20current%20process%3B%20they%20do%20not%20return
 				# 	continue
 				try:
-					# print(f"running {othercmd} with arguments {usercmd.lstrip(othercmd)}")
-					# argstr = usercmd.lstrip(othercmd+' ') # "cat test.py".lstrip(cat ) becomes est.py
-					argstr = usercmd.removeprefix(othercmd+" ")
-					# no need to search in PATH
-					# returnobject = subprocess.run([othercmd, argstr])	#  cat 'n  ote.txt' 'd  r.txt' becomes cat "'n  ote.txt' 'd  r.txt'": no such file.
-					returnobject = subprocess.run(f"{usercmd}", shell=True,capture_output=True)	 # https://stackoverflow.com/questions/15109665/subprocess-call-using-string-vs-using-list
-					# returnobject = subprocess.run(f"{othercmd} {argstr}", shell=True,capture_output=True)	 
+					# print(f"running {firstword} with arguments {userinput.lstrip(firstword)}")
+					# argstr = userinput.lstrip(firstword+' ') # "cat test.py".lstrip(cat ) becomes est.py
+					argstr = userinput.removeprefix(firstword+" ")
 
-					if returnobj.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
+						# firstword = groom(firstword)
+					# no need to search in PATH 
+					# returnobject = subprocess.run([firstword, argstr])	#  cat 'n  ote.txt' 'd  r.txt' becomes cat "'n  ote.txt' 'd  r.txt'": no such file.
+					returnobject = subprocess.run(f"{userinput}", shell=True,capture_output=True)	 # https://stackoverflow.com/questions/15109665/subprocess-call-using-string-vs-using-list
+					
+					
+					# returnobject = subprocess.run(f"{firstword} {argstr}", shell=True,capture_output=True)	 
+					# print(f"trying to run: {firstword}")
+					if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
 						sys.stdout.write(returnobject.stdout.decode('utf-8')) # print() leaves a unnecessary newline
 					else:
 						assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
 
 				except Exception as errname:						
-					sys.stdout.write(usercmd + ": command not found\n")
+					sys.stdout.write(userinput + ": command not found\n")
+					# sys.stdout.write(userinput + ": command not found\n" + str(errname))
 
 if __name__ == "__main__":
 	main()
