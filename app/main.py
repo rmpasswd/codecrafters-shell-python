@@ -88,7 +88,13 @@ def main():
 
 					for i,c in enumerate(m):
 						if c=='\\':
-							continue
+							if INSIDE_SINGLE_QUOTE:
+								sys.stdout.write(c)
+							elif INSIDE_DOUBLE_QUOTE:
+								# sys.stdout.write(ccccccccccccccccccccccc)
+								pass
+							else:
+								continue
 						elif c=='"':
 							if m[i-1]=='\\':
 								sys.stdout.write(c)
