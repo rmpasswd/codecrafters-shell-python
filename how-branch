@@ -1,0 +1,182 @@
+* [33m58c3471[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m codecrafters submit [skip ci]
+[31m|[m * [33m508778d[m[33m ([m[1;31morigin/cli-test-1769011417584[m[33m)[m CLI tests (cli-test-1769011417584)
+[31m|[m[31m/[m  
+[31m|[m * [33ma654556[m[33m ([m[1;31morigin/cli-test-1769011200621[m[33m)[m CLI tests (cli-test-1769011200621)
+[31m|[m[31m/[m  
+* [33m961dcd2[m feat: redirect stdout & stderr to file. codecrafters submit [skip ci]
+[33m|[m * [33m905296d[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m codecrafters submit [skip ci]
+[33m|[m[33m/[m  
+[33m|[m * [33m6fc2a66[m[33m ([m[1;31morigin/cli-test-1768998065215[m[33m)[m CLI tests (cli-test-1768998065215)
+[33m|[m[33m/[m  
+[33m|[m * [33mb97456e[m[33m ([m[1;31morigin/cli-test-1768997912679[m[33m)[m CLI tests (cli-test-1768997912679)
+[33m|[m[33m/[m  
+[33m|[m * [33md9af266[m[33m ([m[1;31morigin/cli-test-1768997852788[m[33m)[m CLI tests (cli-test-1768997852788)
+[33m|[m[33m/[m  
+[33m|[m * [33m5870fd7[m[33m ([m[1;31morigin/cli-test-1768997811742[m[33m)[m CLI tests (cli-test-1768997811742)
+[33m|[m[33m/[m  
+[33m|[m * [33m1277550[m[33m ([m[1;31morigin/cli-test-1768995726171[m[33m)[m CLI tests (cli-test-1768995726171)
+[33m|[m[33m/[m  
+* [33mede5fea[m codecrafters submit [skip ci]
+[1;33m|[m * [33m3837d8c[m[33m ([m[1;31morigin/cli-test-1768993605097[m[33m)[m CLI tests (cli-test-1768993605097)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33m19eddfa[m[33m ([m[1;31morigin/cli-test-1768992831078[m[33m)[m CLI tests (cli-test-1768992831078)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33m4e3a0d6[m[33m ([m[1;31morigin/cli-test-1768992784106[m[33m)[m CLI tests (cli-test-1768992784106)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33mfb47aa4[m[33m ([m[1;31morigin/cli-test-1768992770791[m[33m)[m CLI tests (cli-test-1768992770791)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33mb01944f[m[33m ([m[1;31morigin/cli-test-1768992087746[m[33m)[m CLI tests (cli-test-1768992087746)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33mc60dcdf[m[33m ([m[1;31morigin/cli-test-1768992043476[m[33m)[m CLI tests (cli-test-1768992043476)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33mae7487b[m[33m ([m[1;31morigin/cli-test-1768991625331[m[33m)[m CLI tests (cli-test-1768991625331)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33m567a50b[m[33m ([m[1;31morigin/cli-test-1768989120571[m[33m)[m CLI tests (cli-test-1768989120571)
+[1;33m|[m[1;33m/[m  
+* [33mb2d330d[m codecrafters submit [skip ci]
+[35m|[m * [33mb26d1b1[m[33m ([m[1;31morigin/cli-test-1768987225604[m[33m)[m CLI tests (cli-test-1768987225604)
+[35m|[m[35m/[m  
+[35m|[m * [33m9e68206[m[33m ([m[1;31morigin/cli-test-1768986808557[m[33m)[m CLI tests (cli-test-1768986808557)
+[35m|[m[35m/[m  
+* [33mca41f29[m codecrafters submit [skip ci]
+* [33mc5fe58b[m codecrafters submit [skip ci]
+* [33m52721ec[m codecrafters submit [skip ci]
+* [33m97622e4[m fix: the case command > filename breaks for this test case echo 'hello world'
+[1;31m|[m * [33m931bf58[m[33m ([m[1;31morigin/cli-test-1768977731955[m[33m)[m CLI tests (cli-test-1768977731955)
+[1;31m|[m[1;31m/[m  
+* [33medd0532[m codecrafters submit [skip ci]
+* [33mdc24b55[m codecrafters submit [skip ci]
+* [33m5466c8a[m codecrafters submit [skip ci]
+* [33ma7ebc7a[m codecrafters submit [skip ci]
+* [33mea23ae1[m codecrafters submit [skip ci]
+* [33m9fb4678[m codecrafters submit [skip ci]
+* [33m02d8b12[m feat: slash support for echo
+[1;32m|[m * [33m8330a17[m[33m ([m[1;31morigin/cli-test-1768975385084[m[33m)[m CLI tests (cli-test-1768975385084)
+[1;32m|[m[1;32m/[m  
+* [33m000ce8c[m codecrafters submit [skip ci]
+[1;33m|[m * [33mf555e06[m[33m ([m[1;31morigin/cli-test-1768974695797[m[33m)[m CLI tests (cli-test-1768974695797)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33mee9cb1a[m[33m ([m[1;31morigin/cli-test-1768974358407[m[33m)[m CLI tests (cli-test-1768974358407)
+[1;33m|[m[1;33m/[m  
+[1;33m|[m * [33m47f46fc[m[33m ([m[1;31morigin/cli-test-1768973931456[m[33m)[m CLI tests (cli-test-1768973931456)
+[1;33m|[m[1;33m/[m  
+* [33m761e575[m codecrafters submit [skip ci]
+* [33m94ceed3[m feat: single quote support for echo and cat command
+[1;36m|[m * [33m8a1f473[m[33m ([m[1;31morigin/cli-test-1768973115274[m[33m)[m CLI tests (cli-test-1768973115274)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33maab8697[m[33m ([m[1;31morigin/cli-test-1768973025426[m[33m)[m CLI tests (cli-test-1768973025426)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33m316f2ab[m[33m ([m[1;31morigin/cli-test-1768972789240[m[33m)[m CLI tests (cli-test-1768972789240)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33mdc5cbca[m[33m ([m[1;31morigin/cli-test-1768969819624[m[33m)[m CLI tests (cli-test-1768969819624)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33me0c4fd7[m[33m ([m[1;31morigin/cli-test-1768969647741[m[33m)[m CLI tests (cli-test-1768969647741)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33med29287[m[33m ([m[1;31morigin/cli-test-1768969601792[m[33m)[m CLI tests (cli-test-1768969601792)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33m0b1cd45[m[33m ([m[1;31morigin/cli-test-1768967113652[m[33m)[m CLI tests (cli-test-1768967113652)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33m4a35b37[m[33m ([m[1;31morigin/cli-test-1768966847548[m[33m)[m CLI tests (cli-test-1768966847548)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33m42ff7fb[m[33m ([m[1;31morigin/cli-test-1768914841362[m[33m)[m CLI tests (cli-test-1768914841362)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33m14b31d2[m[33m ([m[1;31morigin/cli-test-1768914655524[m[33m)[m CLI tests (cli-test-1768914655524)
+[1;36m|[m[1;36m/[m  
+[1;36m|[m * [33m2e894b0[m[33m ([m[1;31morigin/cli-test-1768816916407[m[33m)[m CLI tests (cli-test-1768816916407)
+[1;36m|[m[1;36m/[m  
+* [33me605ebc[m feature added: pipeline > redirection of stdout to a file
+* [33m3e8a843[m codecrafters submit [skip ci]
+[1;35m|[m * [33m8675e09[m[33m ([m[1;31morigin/cli-test-1768814810234[m[33m)[m CLI tests (cli-test-1768814810234)
+[1;35m|[m[1;35m/[m  
+[1;35m|[m * [33m9d252e9[m[33m ([m[1;31morigin/cli-test-1768814498143[m[33m)[m CLI tests (cli-test-1768814498143)
+[1;35m|[m[1;35m/[m  
+* [33me9f6811[m codecrafters submit [skip ci]
+* [33mcae858f[m codecrafters submit [skip ci]
+* [33m0ef3e82[m codecrafters submit [skip ci]
+[31m|[m * [33mc009936[m[33m ([m[1;31morigin/cli-test-1768797812690[m[33m)[m CLI tests (cli-test-1768797812690)
+[31m|[m[31m/[m  
+* [33m65be78a[m codecrafters submit [skip ci]
+[32m|[m * [33ma061332[m[33m ([m[1;31morigin/cli-test-1768797377078[m[33m)[m CLI tests (cli-test-1768797377078)
+[32m|[m[32m/[m  
+* [33me6d4235[m codecrafters submit [skip ci]
+* [33m0753d1d[m codecrafters submit [skip ci]
+* [33m3efaa1d[m codecrafters submit [skip ci]
+[33m|[m * [33m2457955[m[33m ([m[1;31morigin/cli-test-1768754159432[m[33m)[m CLI tests (cli-test-1768754159432)
+[33m|[m[33m/[m  
+[33m|[m * [33m4220216[m[33m ([m[1;31morigin/cli-test-1768753917445[m[33m)[m CLI tests (cli-test-1768753917445)
+[33m|[m[33m/[m  
+[33m|[m * [33m44e0f7b[m[33m ([m[1;31morigin/cli-test-1768753875022[m[33m)[m CLI tests (cli-test-1768753875022)
+[33m|[m[33m/[m  
+[33m|[m * [33m8791bd0[m[33m ([m[1;31morigin/cli-test-1768753785811[m[33m)[m CLI tests (cli-test-1768753785811)
+[33m|[m[33m/[m  
+[33m|[m * [33m33772e7[m[33m ([m[1;31morigin/cli-test-1768753509349[m[33m)[m CLI tests (cli-test-1768753509349)
+[33m|[m[33m/[m  
+[33m|[m * [33m43296b0[m[33m ([m[1;31morigin/cli-test-1768753490652[m[33m)[m CLI tests (cli-test-1768753490652)
+[33m|[m[33m/[m  
+[33m|[m * [33m2d3474c[m[33m ([m[1;31morigin/cli-test-1768753430422[m[33m)[m CLI tests (cli-test-1768753430422)
+[33m|[m[33m/[m  
+[33m|[m * [33mcea787d[m[33m ([m[1;31morigin/cli-test-1768753399004[m[33m)[m CLI tests (cli-test-1768753399004)
+[33m|[m[33m/[m  
+[33m|[m * [33m990b237[m[33m ([m[1;31morigin/cli-test-1768753291598[m[33m)[m CLI tests (cli-test-1768753291598)
+[33m|[m[33m/[m  
+[33m|[m * [33mb1bfd50[m[33m ([m[1;31morigin/cli-test-1768753186204[m[33m)[m CLI tests (cli-test-1768753186204)
+[33m|[m[33m/[m  
+[33m|[m * [33mc225d54[m[33m ([m[1;31morigin/cli-test-1768749655947[m[33m)[m CLI tests (cli-test-1768749655947)
+[33m|[m[33m/[m  
+[33m|[m * [33m41ae4ec[m[33m ([m[1;31morigin/cli-test-1768749526948[m[33m)[m CLI tests (cli-test-1768749526948)
+[33m|[m[33m/[m  
+[33m|[m * [33m03563d1[m[33m ([m[1;31morigin/cli-test-1768749439771[m[33m)[m CLI tests (cli-test-1768749439771)
+[33m|[m[33m/[m  
+[33m|[m * [33m5c25d1a[m[33m ([m[1;31morigin/cli-test-1768748595992[m[33m)[m CLI tests (cli-test-1768748595992)
+[33m|[m[33m/[m  
+[33m|[m * [33m6fa6b14[m[33m ([m[1;31morigin/cli-test-1768748548545[m[33m)[m CLI tests (cli-test-1768748548545)
+[33m|[m[33m/[m  
+[33m|[m * [33m1e7cd5c[m[33m ([m[1;31morigin/cli-test-1768628171846[m[33m)[m CLI tests (cli-test-1768628171846)
+[33m|[m[33m/[m  
+* [33m91ad598[m codecrafters submit [skip ci]
+* [33m233fb82[m codecrafters submit [skip ci]
+[1;31m|[m * [33m0e98367[m[33m ([m[1;31morigin/cli-test-1768627490375[m[33m)[m CLI tests (cli-test-1768627490375)
+[1;31m|[m[1;31m/[m  
+[1;31m|[m * [33m0521c09[m[33m ([m[1;31morigin/cli-test-1768443819916[m[33m)[m CLI tests (cli-test-1768443819916)
+[1;31m|[m[1;31m/[m  
+* [33mc640651[m codecrafters submit [skip ci]
+[1;33m|[m * [33m0b79cf3[m[33m ([m[1;31morigin/cli-test-1768405643567[m[33m)[m CLI tests (cli-test-1768405643567)
+[1;33m|[m[1;33m/[m  
+* [33mdbe1487[m codecrafters submit [skip ci]
+[1;34m|[m * [33meece4d1[m[33m ([m[1;31morigin/cli-test-1768402891167[m[33m)[m CLI tests (cli-test-1768402891167)
+[1;34m|[m[1;34m/[m  
+[1;34m|[m * [33me975797[m[33m ([m[1;31morigin/cli-test-1768402406102[m[33m)[m CLI tests (cli-test-1768402406102)
+[1;34m|[m[1;34m/[m  
+[1;34m|[m * [33m14704dd[m[33m ([m[1;31morigin/cli-test-1768401973443[m[33m)[m CLI tests (cli-test-1768401973443)
+[1;34m|[m[1;34m/[m  
+[1;34m|[m * [33m906410d[m[33m ([m[1;31morigin/cli-test-1768401938952[m[33m)[m CLI tests (cli-test-1768401938952)
+[1;34m|[m[1;34m/[m  
+* [33m3035d61[m codecrafters submit [skip ci]
+[32m|[m * [33mbb4067c[m[33m ([m[1;31morigin/cli-test-1768377897748[m[33m)[m CLI tests (cli-test-1768377897748)
+[32m|[m[32m/[m  
+* [33m464b04b[m codecrafters submit [skip ci]
+* [33m1317408[m codecrafters submit [skip ci]
+[33m|[m * [33m459d805[m[33m ([m[1;31morigin/cli-test-1768377531451[m[33m)[m CLI tests (cli-test-1768377531451)
+[33m|[m[33m/[m  
+* [33mcbe99bb[m codecrafters submit [skip ci]
+[34m|[m * [33md0db844[m[33m ([m[1;31morigin/autofix-cd13c6ec-befc-4e3f-98b6-32c18cf2f635[m[33m)[m autofix [skip ci]
+[34m|[m * [33mc2d8634[m[33m ([m[1;31morigin/cli-test-1768376280548[m[33m)[m CLI tests (cli-test-1768376280548)
+[34m|[m[34m/[m  
+[34m|[m * [33m3bb570c[m[33m ([m[1;31morigin/cli-test-1768376245814[m[33m)[m CLI tests (cli-test-1768376245814)
+[34m|[m[34m/[m  
+* [33m2858cba[m codecrafters submit [skip ci]
+* [33maba912f[m codecrafters submit [skip ci]
+[36m|[m * [33m019dba1[m[33m ([m[1;31morigin/cli-test-1768375749159[m[33m)[m CLI tests (cli-test-1768375749159)
+[36m|[m[36m/[m  
+[36m|[m * [33m4ab6f29[m[33m ([m[1;31morigin/autofix-bd647b3a-dccd-4398-be2c-43b8a8a768f9[m[33m)[m autofix [skip ci]
+[36m|[m * [33m08d7d69[m[33m ([m[1;31morigin/cli-test-1768374734280[m[33m)[m CLI tests (cli-test-1768374734280)
+[36m|[m[36m/[m  
+[36m|[m * [33me65fbc2[m[33m ([m[1;31morigin/autofix-690689d4-9e39-4219-890b-2fcc367ca2fe[m[33m)[m autofix [skip ci]
+[36m|[m * [33m0bcf16b[m[33m ([m[1;31morigin/cli-test-1768374701632[m[33m)[m CLI tests (cli-test-1768374701632)
+[36m|[m[36m/[m  
+[36m|[m * [33m73ec6dc[m[33m ([m[1;31morigin/autofix-77863914-1583-4183-8175-29dd47eeb71b[m[33m)[m autofix [skip ci]
+[36m|[m[36m/[m  
+* [33mefd847e[m message for invalid command
+* [33mea31a66[m sys.stdout
+* [33me2838de[m 'test'
+* [33m33cab7e[m init [skip ci]
