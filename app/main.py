@@ -51,15 +51,14 @@ def main():
 				returnobj = subprocess.run(f"{cmd}", shell=True, capture_output = True)
 				# print(returnobj.returncode)
 				if returnobj.returncode: # if non-zero exit code, 0 = successfull
-					print(returnobj.stderr.decode('utf-8'))
+					sys.stdout.write(returnobj.stderr.decode('utf-8'))
 				else:
 					with open(filename, 'w') as f:
 						iterable_str = returnobj.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
 
 			case ['pwd']:
-				print(os.getcwd())
-			
+				print(os.getcwd())	
 
 			case ['type',*rest]:
 				if rest[0] in ['echo', 'exit', 'type', 'pwd']:
