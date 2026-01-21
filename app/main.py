@@ -47,7 +47,7 @@ def main():
 			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] : # ls /tmp/dir > lsoutput.txt
 				# print(cmd)
 				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
-				cmd = usercmd[:usercmd.find(">")-2] # -2 covers 1> also
+				cmd = usercmd[:usercmd.find("1>")] if usercmd.find("1>")!=-1 else usercmd[:usercmd.find(">")]
 				returnobj = subprocess.run(f"{cmd}", shell=True, capture_output = True)
 				# print(returnobj.returncode)
 				if returnobj.returncode: # if non-zero exit code, 0 = successfull
