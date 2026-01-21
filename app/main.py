@@ -90,14 +90,15 @@ def main():
 						if c=='\\':
 							if INSIDE_SINGLE_QUOTE:
 								sys.stdout.write(c)
-							elif INSIDE_DOUBLE_QUOTE:
-								# sys.stdout.write(ccccccccccccccccccccccc)
-								pass
+							# elif INSIDE_DOUBLE_QUOTE:
+							# 	pass
+							if m[i-1]=='\\' and INSIDE_DOUBLE_QUOTE:
+								sys.stdout.write(c)
 							else:
 								continue
 						elif c=='"':
 							if m[i-1]=='\\':
-								sys.stdout.write(c)
+								sys.stdout.write(c)								
 							else:
 								INSIDE_DOUBLE_QUOTE = not INSIDE_DOUBLE_QUOTE
 								continue
