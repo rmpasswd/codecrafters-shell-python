@@ -36,12 +36,15 @@ def main():
 
 		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
 		match usercmd.split():  # https://docs.python.org/3/reference/compound_stmts.html#the-match-statement
+			
 			case ['cd', *rest]: # ['cd', ['/mnt/c/Users/Ahmad', 'Mahin/']]
 				rest = [os.getenv('HOME')] if rest == ['~'] else rest
 				if os.path.exists("".join(rest)):
 					os.chdir("".join(rest))
 				else:
 					print(f"cd: {"".join(rest)}: No such file or directory")
+			
+
 			case [*cmd, '>', filename ] | [*cmd, '1>', filename ] : # ls /tmp/dir > lsoutput.txt
 				returnobj = subprocess.run(cmd, capture_output = True)
 				# print(returnobj.returncode)
@@ -51,8 +54,12 @@ def main():
 					with open(filename, 'w') as f:
 						iterable_str = returnobj.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
+			
+
 			case ['pwd']:
 				print(os.getcwd())
+			
+
 			case ['type',*rest]:
 				if rest[0] in ['echo', 'exit', 'type', 'pwd']:
 					sys.stdout.write(rest[0] + " is a shell builtin\n") 
@@ -61,10 +68,47 @@ def main():
 					sys.stdout.write(rest[0] + " is " + r + "\n") 
 				else:
 					sys.stdout.write(rest[0] + ": not found\n") 
+
 			case ['echo',*rest]:
-				sys.stdout.write(" ".join(rest) + "\n")
+
+				import re
+				regexmatch = re.search(r"'", usercmd)
+				if not regexmatch: # normal case with no quote or slash
+					sys.stdout.write(" ".join(rest) + "\n")	
+
+				else:
+					m = usercmd.lstrip("echo").strip()
+					
+					# Iterate through each character and define some flags for quote and spaces...
+					SINGLE_QUOTE_START=False
+					SINGLE_QUOTE_END=False
+					INSIDE_SINGLE_QUOTE=False
+					WHITESPACE_PRINTED=False
+
+					for c in m:
+						if c=="'":
+							INSIDE_SINGLE_QUOTE= not INSIDE_SINGLE_QUOTE
+							WHITESPACE_PRINTED=False
+						elif c==" ":
+							if INSIDE_SINGLE_QUOTE:
+								sys.stdout.write(c)
+							elif not WHITESPACE_PRINTED:
+								sys.stdout.write(c)
+								WHITESPACE_PRINTED = not WHITESPACE_PRINTED
+							else:
+								continue
+						else:
+							sys.stdout.write(c)
+					sys.stdout.write("\n")
+					# cursor=0
+					# while cursor < len(m):
+						
+						
+				#'hello     shell' 'example''world' script''test
+
 			case ['exit']:
 				sys.exit()
+			
 			case [othercmd, *rest]: 
 			# matches 'at least one word', rest can be [] and still match this case 
 			# equivalent to case _: because I am always matching on a list i.e. usercmd.split()
@@ -80,16 +124,21 @@ def main():
 				# except:
 				# 	pass # probably could not find the command in PATH, we wont throw any error...
 				try:
-					returnobject = subprocess.run([othercmd, *rest])	# no need to search in PATH
+					# print(f"running {othercmd} with arguments {usercmd.lstrip(othercmd)}")
+					# argstr = usercmd.lstrip(othercmd+' ') # "cat test.py".lstrip(cat ) becomes est.py
+					argstr = usercmd.removeprefix(othercmd+" ")
+					# no need to search in PATH
+					# returnobject = subprocess.run([othercmd, argstr])	#  cat 'n  ote.txt' 'd  r.txt' becomes cat "'n  ote.txt' 'd  r.txt'": no such file.
+					returnobject = subprocess.run(f"{othercmd} {argstr}", shell=True,capture_output=True)	 
+
 					assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
-					# print(returnobject.stdout)
-				except:						
+					sys.stdout.write(returnobject.stdout.decode('utf-8')) # print() leaves a unnecessary newline
+
+				except Exception as err:						
 					sys.stdout.write(usercmd + ": command not found\n")
 
 if __name__ == "__main__":
 	main()
 
 
-
-
-
+# cat 'n  ote.txt' 'd  r.txt'
