@@ -72,7 +72,7 @@ def main():
 			case ['echo',*rest]:
 
 				import re
-				regexmatch = re.search(r'["\']', usercmd)
+				regexmatch = re.search(r'["\'\\]', usercmd)
 				if not regexmatch: # normal case with no quote or slash
 					sys.stdout.write(" ".join(rest) + "\n")	
 
@@ -86,25 +86,36 @@ def main():
 					INSIDE_DOUBLE_QUOTE=False
 					WHITESPACE_PRINTED=False
 
-					for c in m:
-						if c=='"':
-							INSIDE_DOUBLE_QUOTE = not INSIDE_DOUBLE_QUOTE
+					for i,c in enumerate(m):
+						if c=='\\':
 							continue
-						elif c=="'":
-							if INSIDE_DOUBLE_QUOTE:
+						elif c=='"':
+							if m[i-1]=='\\':
 								sys.stdout.write(c)
-								WHITESPACE_PRINTED=False
 							else:
-								INSIDE_SINGLE_QUOTE= not INSIDE_SINGLE_QUOTE
-								WHITESPACE_PRINTED=False
-						elif c==" ":
-							if INSIDE_SINGLE_QUOTE or INSIDE_DOUBLE_QUOTE:
-								sys.stdout.write(c)
-							elif not WHITESPACE_PRINTED:
-								sys.stdout.write(c)
-								WHITESPACE_PRINTED = not WHITESPACE_PRINTED
-							else:
+								INSIDE_DOUBLE_QUOTE = not INSIDE_DOUBLE_QUOTE
 								continue
+						elif c=="'":
+							if m[i-1]=='\\':
+								sys.stdout.write(c)
+							else:
+								if INSIDE_DOUBLE_QUOTE:
+									sys.stdout.write(c)
+									WHITESPACE_PRINTED=False
+								else:
+									INSIDE_SINGLE_QUOTE= not INSIDE_SINGLE_QUOTE
+									WHITESPACE_PRINTED=False
+						elif c==" ":
+							if m[i-1]=='\\':
+								sys.stdout.write(c)
+							else:
+								if INSIDE_SINGLE_QUOTE or INSIDE_DOUBLE_QUOTE:
+									sys.stdout.write(c)
+								elif not WHITESPACE_PRINTED:
+									sys.stdout.write(c)
+									WHITESPACE_PRINTED = not WHITESPACE_PRINTED
+								else:
+									continue
 						else:
 							sys.stdout.write(c)
 							WHITESPACE_PRINTED=False
