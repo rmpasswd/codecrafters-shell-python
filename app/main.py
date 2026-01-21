@@ -89,15 +89,16 @@ def main():
 				# print(returnobject)
 				if returnobject.returncode: # if non-zero exit code, 0 = successfull
 					sys.stdout.write(returnobject.stderr.decode('utf-8'))
-				if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
-					if userinput.find(">>"):	
-						with open(filename, 'a') as f:
-							iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
-							f.writelines(iterable_str) #  does not put any line seperators such as \n
-					else:
-						with open(filename, 'w') as f:
-							iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
-							f.writelines(iterable_str) #  does not put any line seperators such as \n
+				# if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
+				# commented to cover edge case: create empty file where there are no stdout
+				if userinput.find(">>"):	
+					with open(filename, 'a') as f:
+						iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
+						f.writelines(iterable_str) #  does not put any line seperators such as \n
+				else:
+					with open(filename, 'w') as f:
+						iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
+						f.writelines(iterable_str) #  does not put any line seperators such as \n
 					
 						# print(f"wrote {returnobject.stdout}")
 
