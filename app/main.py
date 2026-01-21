@@ -72,7 +72,7 @@ def main():
 			case ['echo',*rest]:
 
 				import re
-				regexmatch = re.search(r"'", usercmd)
+				regexmatch = re.search(r'["\']', usercmd)
 				if not regexmatch: # normal case with no quote or slash
 					sys.stdout.write(" ".join(rest) + "\n")	
 
@@ -83,14 +83,22 @@ def main():
 					SINGLE_QUOTE_START=False
 					SINGLE_QUOTE_END=False
 					INSIDE_SINGLE_QUOTE=False
+					INSIDE_DOUBLE_QUOTE=False
 					WHITESPACE_PRINTED=False
 
 					for c in m:
-						if c=="'":
-							INSIDE_SINGLE_QUOTE= not INSIDE_SINGLE_QUOTE
-							WHITESPACE_PRINTED=False
+						if c=='"':
+							INSIDE_DOUBLE_QUOTE = not INSIDE_DOUBLE_QUOTE
+							continue
+						elif c=="'":
+							if INSIDE_DOUBLE_QUOTE:
+								sys.stdout.write(c)
+								WHITESPACE_PRINTED=False
+							else:
+								INSIDE_SINGLE_QUOTE= not INSIDE_SINGLE_QUOTE
+								WHITESPACE_PRINTED=False
 						elif c==" ":
-							if INSIDE_SINGLE_QUOTE:
+							if INSIDE_SINGLE_QUOTE or INSIDE_DOUBLE_QUOTE:
 								sys.stdout.write(c)
 							elif not WHITESPACE_PRINTED:
 								sys.stdout.write(c)
@@ -99,6 +107,7 @@ def main():
 								continue
 						else:
 							sys.stdout.write(c)
+							WHITESPACE_PRINTED=False
 					sys.stdout.write("\n")
 					# cursor=0
 					# while cursor < len(m):
@@ -112,17 +121,12 @@ def main():
 			case [othercmd, *rest]: 
 			# matches 'at least one word', rest can be [] and still match this case 
 			# equivalent to case _: because I am always matching on a list i.e. usercmd.split()
-				# print(rest)
-			# case _:
-				# try:
 				# 	# Task is to :
 				# 	# For example, if the user types custom_exe arg1 arg2, your shell should:
 				# 	# Execute it with three arguments: custom_exe (the program name), arg1, and arg2
 				# 	os.execvp(usercmd.split()[0], usercmd.split()) 
 					# error: Expected prompt ("$ ") but received "" because: https://docs.python.org/3/library/os.html#:~:text=execute%20a%20new%20program%2C%20replacing%20the%20current%20process%3B%20they%20do%20not%20return
 				# 	continue
-				# except:
-				# 	pass # probably could not find the command in PATH, we wont throw any error...
 				try:
 					# print(f"running {othercmd} with arguments {usercmd.lstrip(othercmd)}")
 					# argstr = usercmd.lstrip(othercmd+' ') # "cat test.py".lstrip(cat ) becomes est.py
