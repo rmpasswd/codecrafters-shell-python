@@ -85,7 +85,10 @@ def main():
 					INSIDE_SINGLE_QUOTE=False
 					INSIDE_DOUBLE_QUOTE=False
 					WHITESPACE_PRINTED=False
-
+					
+					ALREADY_ESCAPED=False 
+					# for this edge case: echo "test\\"   this trailing double quote should be ignored and not affected by the preceding slash!
+					
 					for i,c in enumerate(m):
 						if c=='\\':
 							if INSIDE_SINGLE_QUOTE:
@@ -94,11 +97,13 @@ def main():
 							# 	pass
 							if m[i-1]=='\\' and INSIDE_DOUBLE_QUOTE:
 								sys.stdout.write(c)
+								ALREADY_ESCAPED = True
 							else:
 								continue
 						elif c=='"':
-							if m[i-1]=='\\':
-								sys.stdout.write(c)								
+							if m[i-1]=='\\' and (not ALREADY_ESCAPED):
+								sys.stdout.write(c)	
+								ALREADY_ESCAPED=False
 							else:
 								INSIDE_DOUBLE_QUOTE = not INSIDE_DOUBLE_QUOTE
 								continue
