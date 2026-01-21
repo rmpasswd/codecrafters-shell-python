@@ -48,15 +48,18 @@ def main():
 				# print(cmd)
 				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
 				cmd = usercmd[:usercmd.find("1>")] if usercmd.find("1>")!=-1 else usercmd[:usercmd.find(">")]
+				
 				returnobj = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+
 				# print(returnobj.returncode)
 				if returnobj.returncode: # if non-zero exit code, 0 = successfull
 					sys.stdout.write(returnobj.stderr.decode('utf-8'))
-				else:
+				if returnobj.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
 					with open(filename, 'w') as f:
 						iterable_str = returnobj.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
-
+					# print(f"wrote {returnobj.stdout}")
+					
 			case ['pwd']:
 				print(os.getcwd())	
 
@@ -156,12 +159,15 @@ def main():
 					argstr = usercmd.removeprefix(othercmd+" ")
 					# no need to search in PATH
 					# returnobject = subprocess.run([othercmd, argstr])	#  cat 'n  ote.txt' 'd  r.txt' becomes cat "'n  ote.txt' 'd  r.txt'": no such file.
-					returnobject = subprocess.run(f"{othercmd} {argstr}", shell=True,capture_output=True)	 
+					returnobject = subprocess.run(f"{usercmd}", shell=True,capture_output=True)	 # https://stackoverflow.com/questions/15109665/subprocess-call-using-string-vs-using-list
+					# returnobject = subprocess.run(f"{othercmd} {argstr}", shell=True,capture_output=True)	 
 
-					assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
-					sys.stdout.write(returnobject.stdout.decode('utf-8')) # print() leaves a unnecessary newline
+					if returnobj.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
+						sys.stdout.write(returnobject.stdout.decode('utf-8')) # print() leaves a unnecessary newline
+					else:
+						assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
 
-				except Exception as err:						
+				except Exception as errname:						
 					sys.stdout.write(usercmd + ": command not found\n")
 
 if __name__ == "__main__":
