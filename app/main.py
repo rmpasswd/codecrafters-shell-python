@@ -1,8 +1,8 @@
-import re
-import sys, os
+import os,sys
 import stat
 import subprocess
-import rlcompleter, readline
+import re
+import keyword, rlcompleter, readline
 
 def search_in_ospath(st):
 	# import os,stat
@@ -216,11 +216,23 @@ def main():
 					sys.stdout.write(userinput + ": command not found\n")
 					# sys.stdout.write(userinput + ": command not found\n" + str(errname))
 
-if __name__ == "__main__":
-	import keyword
+def load_all_exec_from_path():
 	keyword.kwlist.append("echo")
 	keyword.kwlist.append("exit")
-	readline.parse_and_bind("tab: complete")
+	for p in os.getenv("PATH").split(os.pathsep):
+		try:
+			with os.scandir(p) as scandir_iterable:   
+				for i in scandir_iterable:
+					if i.is_file() and i.stat().st_mode & stat.S_IXUSR: 
+						# print(os.path.join(p,i.name))
+						keyword.kwlist.append(i.name)
+		except:
+			continue
+
+if __name__ == "__main__":
+	# import rlcompleter,readline # you have to have to import rlcompleter as well...
+	load_all_exec_from_path()
+	readline.parse_and_bind("tab: complete") # https://docs.python.org/3/library/rlcompleter.html#module-rlcompleter
 	main()
 
 

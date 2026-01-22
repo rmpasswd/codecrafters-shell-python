@@ -1,16 +1,21 @@
 import subprocess as s
-import sys
+import sys,os, stat
 
-# r = s.run(["python3", "--version"])	# ignore pyright error
+def load_all_exec_from_path():
+	k=[]
+	for p in os.getenv("PATH").split(os.pathsep):
+		# print(f"scanning in: {p}")
 
-cmd0="export PATH=/tmp/:$PATH"
-cmd="cat /tmp/rat/banana"
-# cmd="asdf.sh"
-
-r = s.run(f"{cmd}", shell=True, capture_output=True)
-
-# r = s.run(f"{cmd0}", shell=True,capture_output=True)	 # https://stackoverflow.com/questions/15109665/s-call-using-string-vs-using-list
-# r = s.run(f"{cmd}", shell=True,capture_output=True)	 # https://stackoverflow.com/questions/15109665/s-call-using-string-vs-using-list
-
-print(r)
-
+		try:
+			with os.scandir(p) as scandir_iterable:  # for d in os.scandir(eachdir): directory handler stays open until garbage collection if loop ends early
+				for i in scandir_iterable:
+					if i.is_file() and i.stat().st_mode & stat.S_IXUSR: # or just use convenient fun: shutil.which and shutil.is_executable()
+						k.append(i.name)
+						# print(os.path.join(p,i.name))
+						if i.name.startswith("exit"):
+							print(i.name)
+		except:
+			continue
+	print([i for i in k if i.startswith('echo')])
+if __name__=='__main__':
+	load_all_exec_from_path()
