@@ -2,7 +2,7 @@ import re
 import sys, os
 import stat
 import subprocess
-
+import rlcompleter, readline
 
 def search_in_ospath(st):
 	# import os,stat
@@ -217,6 +217,10 @@ def main():
 					# sys.stdout.write(userinput + ": command not found\n" + str(errname))
 
 if __name__ == "__main__":
+	import keyword
+	keyword.kwlist.append("echo")
+	keyword.kwlist.append("exit")
+	readline.parse_and_bind("tab: complete")
 	main()
 
 
