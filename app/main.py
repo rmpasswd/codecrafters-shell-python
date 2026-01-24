@@ -3,6 +3,8 @@ import stat
 import subprocess
 import re
 import keyword, rlcompleter, readline
+import glob
+
 
 def search_in_ospath(st):
 	# import os,stat
@@ -229,11 +231,46 @@ def load_all_exec_from_path():
 		except:
 			continue
 
+
+def complete(text, state):
+	# complete method is called successively with state == 0, 1, 2, ... until the method returns None. https://docs.python.org/3/library/rlcompleter.html#rlcompleter.Completer.complete
+	
+	# typedstr = readline.get_line_buffer() # We dont need this now. if user typed: echo he<TAB> then text=he and get_line_buffer returns entire thing "echo he"
+
+	matches = [str for str in keyword.kwlist if str.startswith(text)]
+	matches = list(set(matches))
+	matches.sort()
+	# breakpoint()
+	# state can be 1,2, infinity thus:
+	if state < len(matches):
+		# if len(matches) ==0:
+		# 	return None
+		if len(matches) == 1:
+			return matches[0] + " "
+		else:
+			return matches[state]
+	else:
+		return None
+	
+def display_matches(substr, matcheslist, longest_match_length): # https://docs.python.org/3/library/readline.html#readline.set_completion_display_matches_hook
+	print()
+	# for m in matcheslist:
+	sys.stdout.write("  ".join(matcheslist))
+	sys.stdout.write("\n$ " + substr)
+	sys.stdout.flush()
+	readline.redisplay()
+
+
+	# readline.redisplay()
+
+
 if __name__ == "__main__":
 	# import rlcompleter,readline # you have to have to import rlcompleter as well...
-	load_all_exec_from_path()
+	# keyword.kwlist.append("echo")
+	# keyword.kwlist.append("exit")
 	readline.parse_and_bind("tab: complete") # https://docs.python.org/3/library/rlcompleter.html#module-rlcompleter
+	load_all_exec_from_path()
+	readline.set_completer(complete)
+	readline.set_completion_display_matches_hook(display_matches)
+	# readline.set_completer_delims("\t") # used for advanced cases.
 	main()
-
-
-# cat 'n  ote.txt' 'd  r.txt'
