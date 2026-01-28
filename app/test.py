@@ -1,66 +1,71 @@
-import subprocess as s
+import subprocess  
 import sys,os, stat
+import shlex
+import signal
 
-def load_all_exec_from_path():
-	k=[]
-	for p in os.getenv("PATH").split(os.pathsep):
-		# print(f"scanning in: {p}")
-
-		try:
-			with os.scandir(p) as scandir_iterable:  # for d in os.scandir(eachdir): directory handler stays open until garbage collection if loop ends early
-				for i in scandir_iterable:
-					if i.is_file() and i.stat().st_mode & stat.S_IXUSR: # or just use convenient fun: shutil.which and shutil.is_executable()
-						k.append(i.name)
-						# print(os.path.join(p,i.name))
-						if i.name.startswith("exit"):
-							print(i.name)
-		except:
-			continue
-	print([i for i in k if i.startswith('echo')])
-
-# Variables to track completion state
-last_tab_text = ""
-last_tab_matches = []
-last_tab_count = 0
-
-
+# keep this
 def get_longest_common_prefix(strings):
-    """Get the longest common prefix of a list of strings."""
-    if not strings:
-        return ""
-    if len(strings) == 1:
-        return strings[0]
-        
-    prefix = strings[0]
-    for string in strings[1:]:
-        # Find the length of common prefix
-        length = 0
-        for i, (c1, c2) in enumerate(zip(prefix, string)):
-            if c1 != c2:
-                break
-            length = i + 1
-        
-        # Update prefix to common part
-        prefix = prefix[:length]
-        if not prefix:
-            break
-            
-    return prefix
-
+	"""Get the longest common prefix of a list of strings."""
+	if not strings:
+		return ""
+	if len(strings) == 1:
+		return strings[0]
+		
+	prefix = strings[0]
+	for string in strings[1:]:
+		# Find the length of common prefix
+		length = 0
+		for i, (c1, c2) in enumerate(zip(prefix, string)):
+			if c1 != c2:
+				break
+			length = i + 1
+		
+		# Update prefix to common part
+		prefix = prefix[:length]
+		if not prefix:
+			break
+			
+	return prefix
 
 def main():
-	partial = 'exi'
-	fullist = ['excelexport', 'exch', 'exec', 'exim4', 'exim_checkaccess', 'exim_id_update', 'exim_lock', 'exipick', 'expand', 'extrac32']
-	
-	# longest common prefix:
-	lcp_list=[]
-	for i in fullist:
-		if i.startswith(partial):
-			lcp_list.append(i)
-	print(lcp_list)
+
+	# cmd  = '''echo -e "raspberry grape\npear strawberry\nmango blueberry\npineapple banana\norange apple" '''
+	# cmd = '''cat /tmp/dog/file-41'''
+	cmd ='''echo -e "strawberry apple\ngrape pear\nbanana blueberry\nraspberry mango\npineapple orange" > "/tmp/cow/file-46"'''
+	# returnobject = os.execvp("bash -c", ["echo -e"] + cmd.split()[1:])
+
+	try:
+		returnobject = subprocess.run(["/usr/bin/bash","-c" , cmd], capture_output=True, timeout=2)
+
+	except:
+		returnobject.send_signal(signal.SIGINT)
+	print(returnobject.stdout.decode())
 
 
+	# print(returnobject)
+
+
+def runpipes(beforepipe,afterpipe):
+	# seperate function because
+	# Only one "*" pattern allowed in a pattern. case [*beforepipe, "|", *afterpipe] is invalid
+
+	import signal
+	p1 = subprocess.Popen([beforepipe.split()[0], *beforepipe.split()[1:]], stdout=subprocess.PIPE)
+	try:
+		# p1.wait(timeout=1)
+		pass
+	except Exception as TimeoutExpired:
+		p1.send_signal(signal.SIGINT)
+	except:
+		sys.stdout.write("command not found, inside runpipe\n")
+
+	# print(f"p1 out: {p1.stdout.read()}")   # io.Bufferedreader
+
+	p2 = subprocess.Popen([afterpipe.split()[0], *afterpipe.split()[1:]], stdin=subprocess.PIPE)
+	r = p2.communicate(p1.stdout.read())
+	# print(r) # automatically printed by 'communicate' mehtod.
+	# p2.wait(timeout=3)
 
 if __name__=='__main__':
 	# load_all_exec_from_path()
-	main()
+	runpipes()

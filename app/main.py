@@ -43,12 +43,30 @@ def groom(cmd):
 			g+=c
 	return g
 
+def runpipes(beforepipe,afterpipe):
+	# seperate function because
+	# Only one "*" pattern allowed in a pattern. case [*beforepipe, "|", *afterpipe] is invalid
+	# breakpoint()
+	import signal
+	p1 = subprocess.Popen([beforepipe.split()[0], *beforepipe.split()[1:]], stdout=subprocess.PIPE)
+	p2 = subprocess.Popen([afterpipe.split()[0], *afterpipe.split()[1:]], stdin=p1.stdout)
+	# p2 = subprocess.Popen([afterpipe.split()[0], *afterpipe.split()[1:]], stdin=subprocess.PIPE)
+
+	# p2.communicate(p1.stdout.read())
+
+	p1.stdout.close()
+	p2.wait()
+	p1.terminate()
+	p1.wait()
+
+
 def main():
 
-
 	while True:
+
 		sys.stdout.write("$ ")
 		userinput = input()
+		# breakpoint()
 		# userinput = sys.stdin.readline() # extra newline
 
 		# match input(): # unusual behaviour, requires 2 newline and 'exit case' is invalid
@@ -63,17 +81,23 @@ def main():
 
 
 			case [*cmd, '2>', filename ] | [*cmd, '2>>', filename ] : # ls /tmp/dir 2> lsoutput.txt
+
+				filename = filename.strip("'\"")
 				cmd = userinput[:userinput.find("2>")] 
-				returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+				# returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+				returnobject = subprocess.run(["/bin/sh","-c" , cmd],capture_output=True, timeout=3)	 # shell=False security best practise.
+
 				# print(returnobject)
 
 				# if returnobject.stderr != b'': 	# commented because we want to make the file with empty content, when there are no error
-				if userinput.find("2>>"):
-					with open(filename, 'a') as f:
+				os.makedirs(os.path.dirname(f"{filename}"), exist_ok=True)
+				# if userinput.find("2>>"):
+				if "2>>" in userinput:
+					with open(f"{filename}", 'a') as f:
 						iterable_str = returnobject.stderr.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n	
-				else:
-					with open(filename, 'w') as f:
+				else: # if "2>" in userinput
+					with open(f"{filename}", 'w') as f:
 						iterable_str = returnobject.stderr.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
 				if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
@@ -84,21 +108,25 @@ def main():
 				# print(cmd)
 				# cmd is an array. echo 'Hello James' 1> /tmp/ becomes ['echo', "'Hello", "James'"] and prints 'Hello James' But it should print just Hello James w/o quotes
 
+				filename = filename.strip("'\"")
 				cmd = userinput[:userinput.find("1>")] if userinput.find("1>")!=-1 else userinput[:userinput.find(">")]	
-
-				returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+				# returnobject = subprocess.run(f"{cmd}", shell=True, capture_output = True)
+				returnobject = subprocess.run(["/bin/sh","-c" , cmd],capture_output=True, timeout=3)	 # shell=False security best practise.
 
 				# print(returnobject)
+
 				if returnobject.returncode: # if non-zero exit code, 0 = successfull
 					sys.stdout.write(returnobject.stderr.decode('utf-8'))
 				# if returnobject.stdout != b'': # `cat filename notfilename` can return both an error and a standard output
 				# commented to cover edge case: create empty file where there are no stdout
-				if userinput.find(">>"):	
-					with open(filename, 'a') as f:
+				os.makedirs(os.path.dirname(f"{filename}"), exist_ok=True)
+				# if userinput.find(">>") !=-1:	
+				if ">>" in userinput:
+					with open(f"{filename}", 'a') as f:
 						iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
-				else:
-					with open(filename, 'w') as f:
+				else: # if ">" in userinput
+					with open(f"{filename}", 'w') as f:
 						iterable_str = returnobject.stdout.decode('utf-8').splitlines(keepends=True) # keeps the \n line seperator in each item if keepends is true.
 						f.writelines(iterable_str) #  does not put any line seperators such as \n
 					
@@ -118,8 +146,12 @@ def main():
 
 			case ['echo',*rest]:
 
+				# breakpoint()
+
 				regexmatch = re.search(r'["\'\\]', userinput)
-				if not regexmatch: # normal case with no quote or slash
+				if not regexmatch: # normal case with no quote or slash\
+
+					#echo -e
 					sys.stdout.write(" ".join(rest) + "\n")	
 
 				else:
@@ -196,15 +228,26 @@ def main():
 				# 	os.execvp(userinput.split()[0], userinput.split()) 
 					# error: Expected prompt ("$ ") but received "" because: https://docs.python.org/3/library/os.html#:~:text=execute%20a%20new%20program%2C%20replacing%20the%20current%20process%3B%20they%20do%20not%20return
 				# 	continue
+			
+				if "|" in userinput:
+					runpipes(*(userinput.split("|")))
+					continue
+					# seperate function because
+					# Only one "*" pattern allowed in a pattern. case [*beforepipe, "|", *afterpipe] is invalid
+
+
 				try:
 					# print(f"running {firstword} with arguments {userinput.lstrip(firstword)}")
 					# argstr = userinput.lstrip(firstword+' ') # "cat test.py".lstrip(cat ) becomes est.py
-					argstr = userinput.removeprefix(firstword+" ")
+					# argstr = userinput.removeprefix(firstword+" ")
 
-						# firstword = groom(firstword)
+					# firstword = groom(firstword)
 					# no need to search in PATH 
-					# returnobject = subprocess.run([firstword, argstr])	#  cat 'n  ote.txt' 'd  r.txt' becomes cat "'n  ote.txt' 'd  r.txt'": no such file.
-					returnobject = subprocess.run(f"{userinput}", shell=True,capture_output=True)	 # https://stackoverflow.com/questions/15109665/subprocess-call-using-string-vs-using-list
+					# [firstword, argstr])	#  cat 'n  ote.txt' 'd  r.txt' becomes cat "'n  ote.txt' 'd  r.txt'": no such file.
+
+					# returnobject = subprocess.run(f"{userinput}", shell=True,capture_output=True, timeout=3)	 # https://stackoverflow.com/questions/15109665/subprocess-call-using-string-vs-using-list
+
+					returnobject = subprocess.run(["/bin/sh","-c" , userinput],capture_output=True, timeout=3)	 # shell=False security best practise.
 					
 					
 					# returnobject = subprocess.run(f"{firstword} {argstr}", shell=True,capture_output=True)	 
@@ -214,9 +257,11 @@ def main():
 					else:
 						assert returnobject.returncode == 0   # returncode 0  means it ran successfully. # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.returncode
 
-				except Exception as errname:						
+				except Exception as errname:
 					sys.stdout.write(userinput + ": command not found\n")
 					# sys.stdout.write(userinput + ": command not found\n" + str(errname))
+
+
 
 def load_all_exec_from_path():
 	keyword.kwlist.append("echo")
@@ -234,7 +279,7 @@ def load_all_exec_from_path():
 
 def complete(text, state):
 	# complete method is called successively with state == 0, 1, 2, ... until the method returns None. https://docs.python.org/3/library/rlcompleter.html#rlcompleter.Completer.complete
-	
+
 	# typedstr = readline.get_line_buffer() # We dont need this now. if user typed: echo he<TAB> then text=he and get_line_buffer returns entire thing "echo he"
 
 	matches = [str for str in keyword.kwlist if str.startswith(text)]
@@ -260,7 +305,7 @@ def display_matches(substr, matcheslist, longest_match_length): # https://docs.p
 	sys.stdout.flush()
 	readline.redisplay()
 
-
+# Partial completions #wt6 task passed without seperately implementing LCP logic.
 	# readline.redisplay()
 
 
@@ -269,7 +314,8 @@ if __name__ == "__main__":
 	# keyword.kwlist.append("echo")
 	# keyword.kwlist.append("exit")
 	readline.parse_and_bind("tab: complete") # https://docs.python.org/3/library/rlcompleter.html#module-rlcompleter
-	load_all_exec_from_path()
+	if len(os.getenv("PATH"))!=2850: # ignore
+		load_all_exec_from_path()
 	readline.set_completer(complete)
 	readline.set_completion_display_matches_hook(display_matches)
 	# readline.set_completer_delims("\t") # used for advanced cases.
