@@ -80,7 +80,7 @@ p2 = subprocess.Popen([afterpipe.split()[0], *afterpipe.split()[1:]], stdin=subp
 We get this error:  
 ![alt text](./media/ss-cf-test-123.png)
 
-If we dont wait() and exit the p1 command(tail) won't 'catch' the new appended line(that has been appeneded while this command was running.)
+If we dont wait() and exit, the p1 command(tail) won't 'catch' the new appended line(that has been appeneded by the user while this command was running.)
 After staring at the docs and the wall (and chatgpt), it seems i made the two Popen wrong. I tried to play basketball with two pipes, when i can just 'stitch' them together. `p1.stdout` should be the` stdin` of p2. p1 is tail command and p2 is the head command reading from tail. Now it makes more sense.
 ```
 	p1 = subprocess.Popen([beforepipe.split()[0], *beforepipe.split()[1:]], stdout=subprocess.PIPE)
@@ -106,7 +106,7 @@ But we still have to figure the waiting and terminating p1 command(`tail`). We c
    # optional cleanup.
 ```
 
-And this is the final code snippet to pass `Dual-command pipeline #br6`
+And this is the final code snippet to pass `Dual-command pipeline #BR6`
 
 ```
 def runpipes(beforepipe,afterpipe):
