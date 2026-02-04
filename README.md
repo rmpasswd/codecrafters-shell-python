@@ -1,46 +1,45 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/f6ac9def-f810-4c46-abb9-86f2f3bb074f)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+## Overview
+**Python solutions to the ["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).**
 
-This is a starting point for Python solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+A (POSIX compliant) shell capable of: 
+- interpreting shell commands,
+- running external programs and builtin commands like cd, pwd, echo and more.
+- shell command parsing, REPLs, builtin commands, and more.
+- 
+## Demo
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
-
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
-
-# Passing the first stage
-
-The entry point for your `shell` implementation is in `app/main.py`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
-
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
-```
-
-Time to move on to the next stage!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `uv` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `app/main.py`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+![shellv0 8 1](https://github.com/user-attachments/assets/3acd94fa-b253-46a7-b362-36c1be5665ca)
 
 
-# Walkthrough & Thought-process...
+## How to Run this Tool in a Windows Machine:
+**Requirements:**
+- This is a *nix shell and  requires a linux environment e.g. Windows Subsystem of Linux(check [how-to](https://learn.microsoft.com/en-us/windows/wsl/install#install-wsl-command))  
+ - Download the main repo with the green 'code' icon  
+ <img width="522" height="437" alt="image" src="https://github.com/user-attachments/assets/8b46cf13-4fa2-4c5d-942c-a6b237c2b550" />
+
+- Extract, inside the extracted folder, mouse click on the path  
+  <img width="570" height="283" alt="image" src="https://github.com/user-attachments/assets/153aff3f-5603-406e-b827-6acdda5f6f00" />  
+
+- If you have installed 'debian' like me from _windows store_, then type `wsl -d debian`  
+- **Now that we have a linux envrionment**, test if you  have `python3` , just type it in the terminal.
+- If you dont, install python3 with `sudo apt install python3 python3-pip python3-venv -y`. Make sure the system is up-to-date as well: `sudo apt update; sudo apt install libicu-dev pkg-config build-essential`
+- **Finally,run `python app/main.py`**. Wait a few second for the dollar $ign to appear.
+- If you face error that 'some modules are not installed', then:
+	- Create a virtual environment: `python3 -m venv myvenv`. Activate the environment `source ./myvenv/activate`
+	- Install some required libraries with `python3 -m pip install -r requirements.txt`. If you face error with this command then make sure that the distinguished python package managers (`setuptools, pip, packaging, wheel`) are up-to-date : ` pip install --upgrade pip setuptools wheel`. Then try again.
+
+
+## How to attempt this challenge:
+
+**Go to [codecrafters](https://app.codecrafters.io/r/cooperative-sardine-569975)**. Try the current 'free challenge of the month' or buy a subscription.
+	
+## Walkthrough & Thought-process...
 Each "Build your own x" Codecrafters challenge is made of different group of tasks called extensions. 
 ![alt text](./media/123123.png)
 
-# To implement the pipeline feature (e.g. `cat /tmp/file | wc -l`) we need to dive into the concept of forks and pipes.
+**To implement the pipeline feature** (e.g. `cat /tmp/file | wc -l`) we need to dive into the concept of forks and pipes.
 
-Googling 'python and unix pipes', I get this [empty](https://docs.python.org/3/library/pipes.html) deprecated page pointing to newer features in [subprocess](https://docs.python.org/3/library/subprocess.html#subprocess.PIPE) module. 
+Googling 'python and unix pipes', I get this [empty](https://docs.python.org/3/library/pipes.html) deprecated docs pointing to newer features in [subprocess](https://docs.python.org/3/library/subprocess.html#subprocess.PIPE) module. 
 
 > subprocess.PIPE  
 Special value that can be used as the stdin, stdout or stderr argument to Popen and indicates that a pipe to the standard stream should be opened. Most useful with Popen.communicate().
@@ -106,7 +105,7 @@ But we still have to figure the waiting and terminating p1 command(`tail`). We c
    # optional cleanup.
 ```
 
-And this is the final code snippet to pass `Dual-command pipeline #BR6`
+And this is the final code snippet to pass the task: `Dual-command pipeline #BR6`
 
 ```
 def runpipes(beforepipe,afterpipe):
