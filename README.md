@@ -17,10 +17,10 @@ A (POSIX compliant) shell capable of:
  - Download the main repo with the green 'code' icon  
  <img width="522" height="437" alt="image" src="https://github.com/user-attachments/assets/8b46cf13-4fa2-4c5d-942c-a6b237c2b550" />
 
-- Extract, inside the extracted folder, mouse click on the path  
+- Extract, inside the extracted folder, mouse click on the path and type 'cmd'
   <img width="570" height="283" alt="image" src="https://github.com/user-attachments/assets/153aff3f-5603-406e-b827-6acdda5f6f00" />  
 
-- If you have installed 'debian' like me from _windows store_, then type `wsl -d debian`  
+- Type `wsl -d debian` inside windows cmd, if you have installed `wsl install --distribution debian` like me.  
 - **Now that we have a linux envrionment**, test if you  have `python3` , just type it in the terminal.
 - If you dont, install python3 with `sudo apt install python3 python3-pip python3-venv -y`. Make sure the system is up-to-date as well: `sudo apt update; sudo apt install libicu-dev pkg-config build-essential`
 - **Finally,run `python app/main.py`**. Wait a few second for the dollar $ign to appear.
